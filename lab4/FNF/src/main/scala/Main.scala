@@ -8,7 +8,6 @@ object Main extends App {
     val b = Transaction("b", "y", List("y", "z"))
     val c = Transaction("c", "x", List("x", "z"))
     val d = Transaction("d", "z", List("y", "z"))
-    //    val e = Transaction("e", "z", List("y", "z"))
     
     val alphabet = Alphabet(List(a, b, c, d))
     val word = Word(List(b, a, a, d, c, b))
@@ -78,20 +77,6 @@ object Main extends App {
             })._2
     }
     
-//    def createGraph(word: Word): List[Node] = {
-//        val nodes: List[Node] = word.transactions.zipWithIndex.map { case (t, id) ⇒ Node(id, t, List.empty[Node]) }
-//        nodes.map(
-//            rootNode ⇒ {
-//                val dep = dependent(rootNode.transaction.name).toSet
-//                val possibleChildren = nodes.dropWhile(node ⇒ node != rootNode) match {
-//                    case Nil ⇒ Nil
-//                    case _ :: tail ⇒ tail
-//                }
-//                val children = possibleChildren.filter(c ⇒ dep(c.transaction)).foldLeft(List.empty[Node])((acc: List[Node], c: Node) ⇒ acc.::(c))
-//                Node(rootNode.id, rootNode.transaction, children)
-//            })
-//    }
-    
     def createGraphV2(word: Word): Graph = {
         val nodes: List[Node] = word.transactions.zipWithIndex.map { case (t, id) ⇒ Node(id, t, List.empty[Node]) }
         nodes.reverse.foldLeft(
@@ -129,9 +114,12 @@ object Main extends App {
     }
     
     
-    println(dependent)
-    println(independent)
-    println(calculateFNF(word))
+    println("D: ", dependent)
+    println("I: ", independent)
+    println("FNF: ", calculateFNF(word))
     val graph = createGraphV2(word)
-    println(graphToFnF(graph))
+    println("############### paste at http://www.webgraphviz.com/ ############")
+    graph.print()
+    println("#################################################################")
+    println("(fromGraph)FNF: ", graphToFnF(graph))
 }
